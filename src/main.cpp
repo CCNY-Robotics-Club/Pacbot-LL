@@ -1,20 +1,18 @@
+#include <Adafruit_VL6180X.h>
+#include <Wire.h>
 #include <Arduino.h>
 
-// put function declarations here:
-int myFunction(int, int);
+Adafruit_VL6180X mySens = Adafruit_VL6180X();
 
 void setup() {
+  mySens.begin();
   // put your setup code here, to run once:
-  int result = myFunction(2, 3);
-  Serial.begin();
-  Serial.println(result);
+  Serial.begin(115200);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  Serial.print(mySens.readRange());
+  Serial.print('\n');
+  delay(100);
 }
