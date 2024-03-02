@@ -13,6 +13,7 @@ private:
 public:
     motor(int pinL, int pinR);
     void drive(int speed);
+    void drive(int speed, int time, int mode);
     void stop();
 };
 

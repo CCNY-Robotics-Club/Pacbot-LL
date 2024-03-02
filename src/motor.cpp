@@ -25,17 +25,24 @@ void motor::drive(int speed)
 }
 
 /**
- * Drive motor clockwise (right)
- * @param speed motor speed
+ * Change motor speed by time and function
+ * @param dir direction (CW if true, CCW if false)
+ * @param desired_speed desired motor speed
+ * @param time period to change speed along
+ * @param mode speed change function (linear vs arctan)
  * TODO: range?
 */
-void motor::driveR(int speed)
+void motor::drive(int desired_speed, int time, int mode)
 {
+    // Gather current state first
+    int current_speed = this->speed;
+    int speed_difference = desired_speed - current_speed;
+    int ramp_tick = time / speed_difference;
     this->stop();
-    this->speed = speed;
-    if (speed < 200) analogWriteFreq(500);
-    else analogWriteFreq(500);
-    analogWrite(pinR,speed);
+    if (current_speed < desired_speed)
+        while(current_speed < desired_speed) this->drive(++current_speed);
+    else
+        while(current_speed > desired_speed) this->drive(--current_speed);
 }
 
 /**
