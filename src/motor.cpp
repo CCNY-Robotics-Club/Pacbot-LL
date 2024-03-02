@@ -13,18 +13,15 @@ motor::motor(int pinL, int pinR)
 }
 
 /**
- * Drive motor counterclockwise (left)
- * @param speed motor speed
- * TODO: range?
+ * Change motor speed instantaneously
+ * @param speed motor speed (postive CCW, negative CW)
 */
-void motor::driveL(int speed)
+void motor::drive(int speed)
 {
     this->stop();
     this->speed = speed;
-    if (speed < 200) analogWriteFreq(500);
-    else analogWriteFreq(500);
-    analogWrite(pinL,speed);
-
+    if (speed > 0) {analogWrite(pinR,speed);}
+    else {analogWrite(pinL,speed);}
 }
 
 /**

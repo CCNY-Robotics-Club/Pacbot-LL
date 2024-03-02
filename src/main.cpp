@@ -8,8 +8,8 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  m1.driveL(255);
+  m1.drive(100);
   delay(500);
-  m1.driveR(255);
+  m1.drive(-100);
   delay(500);
 }
