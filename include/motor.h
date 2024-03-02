@@ -12,8 +12,7 @@ private:
     int speed; // current speed
 public:
     motor(int pinL, int pinR);
-    void driveL(int speed);
-    void driveR(int speed);
+    void drive(int speed);
     void stop();
 };
 
