@@ -1,5 +1,7 @@
-#include <Arduino.h>
 #include "motor.h"
+#include <Arduino.h>
+#include <math.h>
+
 /**
  * Instantiate a Motor Object.
  * @param pinL pin connected to left drive
@@ -14,35 +16,49 @@ motor::motor(int pinL, int pinR)
 
 /**
  * Change motor speed instantaneously
- * @param speed motor speed (postive CCW, negative CW)
+ * @param speed motor speed (-255 - 255)
 */
 void motor::drive(int speed)
 {
     this->stop();
     this->speed = speed;
-    if (speed > 0) {analogWrite(pinR,speed);}
-    else {analogWrite(pinL,speed);}
+    if (speed > 0) analogWrite(pinR,speed);
+    else analogWrite(pinL,-speed);
 }
 
 /**
  * Change motor speed by time and function
- * @param dir direction (CW if true, CCW if false)
- * @param desired_speed desired motor speed
+ * @param desired_speed desired motor speed (-255 - 255)
  * @param time period to change speed along
- * @param mode speed change function (linear vs arctan)
- * TODO: range?
+ * @param mode regression (1 = linear, 2 = arctan)
 */
 void motor::drive(int desired_speed, int time, int mode)
 {
     // Gather current state first
     int current_speed = this->speed;
-    int speed_difference = desired_speed - current_speed;
-    int ramp_tick = time / speed_difference;
+    int speed_difference = abs(desired_speed - current_speed);
+    float ramp_tick = time / speed_difference;
     this->stop();
-    if (current_speed < desired_speed)
-        while(current_speed < desired_speed) this->drive(++current_speed);
-    else
-        while(current_speed > desired_speed) this->drive(--current_speed);
+    if (mode == 1) // linear regression
+    {
+        if (current_speed < desired_speed)
+            while(current_speed < desired_speed)
+            {
+                this->drive(++current_speed);
+                delay(ramp_tick);
+            }
+        else
+            while(current_speed > desired_speed)
+            {
+                this->drive(--current_speed);
+                delay(ramp_tick);
+            }
+    }
+    else if (mode == 0) // arctangent regression
+    {
+        // TODO: implemtn! So just call with linear regression for now.
+        this->drive(desired_speed,time,1);
+    }
 }
 
 /**
