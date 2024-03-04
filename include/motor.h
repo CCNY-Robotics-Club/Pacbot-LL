@@ -4,8 +4,8 @@
 class motor
 {
 private:
-    const int pinL; // left pin
-    const int pinR; // right pin
+    int pinL; // left pin
+    int pinR; // right pin
     int speed = 0; // current speed
 public:
     motor(int pinL, int pinR);
