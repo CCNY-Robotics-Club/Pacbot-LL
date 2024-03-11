@@ -77,11 +77,13 @@ void loop(void)
   /* Display the results (magnetic vector values are in micro-Tesla (uT)) */
   Serial.print("Sensor #1 - ");
   Serial.print(mySens0.readRange());
+  Serial.println("");
   
   tcaselect(1);
   /* Display the results (magnetic vector values are in micro-Tesla (uT)) */
   Serial.print("Sensor #2 - ");
   Serial.print(mySens1.readRange());
+  Serial.println("");
   
   delay(500);
 }
